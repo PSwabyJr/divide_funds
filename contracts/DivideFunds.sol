@@ -3,7 +3,7 @@
 pragma solidity ^0.6.0;
 
 
-contract DivideFund{
+contract DivideFunds{
 
     address public owner;
     address private secondAddress;
@@ -23,7 +23,7 @@ contract DivideFund{
     }
 
     modifier secondAddressExists{
-        require(secondAddress != 0);
+        require(secondAddress != address(0));
         _;
     }
 
@@ -34,12 +34,12 @@ contract DivideFund{
     }
 
     // splits the funds 50/50 between the Owner's primary wallet address and secondary wallet address
-    function dividefunds() payable onlyOwner, secondAddressExists, sufficientFundsAvaiable public {
-        fundsToDivide = address(this).balance - reservedWei;
-        fundsForOwner = fundsToDivide/2;
-        fundsForSecondaryAccount = fundsToDivide - fundsForOwner;
+    function dividefunds() payable onlyOwner secondAddressExists sufficientFundsAvailable public {
+        uint256 fundsToDivide = address(this).balance - reservedWei;
+        uint256 fundsForOwner = fundsToDivide/2;
+        uint256 fundsForSecondaryAccount = fundsToDivide - fundsForOwner;
         msg.sender.transfer(fundsForOwner);
-        secondAddress.transfer(fundsForSecondaryAccount);
+        payable(secondAddress).transfer(fundsForSecondaryAccount);
 
     }
 
